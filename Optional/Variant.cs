@@ -10,6 +10,15 @@ namespace Optional
 
         #endregion
 
+        #region Private Constructor
+
+        private Variant(object item)
+        {
+            _item = item;
+        }
+
+        #endregion
+
         #region Implicit Conversions
 
         public static implicit operator Variant<T, U>(T t)
@@ -25,11 +34,6 @@ namespace Optional
         public static implicit operator Variant<U, T>(Variant<T, U> that)
         {
             return new Variant<U, T>(that._item);
-        }
-
-        private Variant(object item)
-        {
-            _item = item;
         }
 
         #endregion
@@ -76,22 +80,16 @@ namespace Optional
             return FlatMap(x => x, g);
         }
 
-        public Variant<A, B> FlatMap<A, B>(Func<T, Variant<A, B>> f, Func<U, Variant<A, B>> g)
-        {
-            switch (_item)
-            {
-                case T t: return f(t);
-                case U u: return g(u);
-                default: return null; // Impossible.
-            }
-        }
-
         #endregion
     }
 
     public class Variant<T, U, V>
     {
+        #region Fields
+
         internal readonly object _item;
+
+        #endregion
 
         public Variant(T t)
         {
